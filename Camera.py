@@ -1,8 +1,7 @@
-import os
 import numpy
 import math
 from PIL import Image
-from multiprocessing import Process, Queue, JoinableQueue
+from multiprocessing import Process, Manager
 
 
 class Camera:
@@ -44,39 +43,28 @@ class Camera:
     def render_image(self, size, scene):
         width, height = size
         image = Image.new('RGB', size)
-        pix = image.load()
-        pixel_coordinates = JoinableQueue()
-        rendered_pixels = Queue()
+
+        pixel_coordinates = list()
+        m = Manager()
+        rendered_pixels = m.list(range(width * height))
+        num_of_threads = 4
         for x in range(width):
             for y in range(height):
-                pixel_coordinates.put((x, y))
+                pixel_coordinates.append((x, y))
+        chunks = [[e for e in pixel_coordinates[i::num_of_threads]] for i in range(num_of_threads)]
         ps = []
-        for i in range(4):
-            p = Process(target=calc_pixel, name='t%d' % i, args=(pixel_coordinates, self, scene, width, height, rendered_pixels))
-            p.daemon = True
+        for i in range(num_of_threads):
+            p = Process(target=calc_pixel, args=(chunks[i], self, scene, width, height, rendered_pixels))
             ps.append(p)
-
-        for p in ps:
             p.start()
-
-        pixel_coordinates.join()
-        print('all pixels processed')
-        while not rendered_pixels.empty():
-            (x, y), color = rendered_pixels.get()
-            pix[x, y] = color
-        print('image rendered')
+        for p in ps:
+            p.join()
+        image.putdata(rendered_pixels)
         image.save('image.png')
 
 
-def calc_pixel(pixel_coordinates, camera, scene, width, height, rendered_pixels):
-    try:
-        while True:
-            print(os.getpid())
-            x, y = pixel_coordinates.get(timeout=1)
-            pixel_vector = camera.get_pixel_vector(x, y, width, height)
-            color = scene.trace(camera.eye, pixel_vector, camera.near, camera.far, camera.eye)
-            rendered_pixels.put(((x, y), (color[0], color[1], color[2])))
-            pixel_coordinates.task_done()
-    except:
-        print('error')
-    print('end', os.getpid())
+def calc_pixel(pixel_coordinates, camera, scene, width, height, pix):
+    for (x, y) in pixel_coordinates:
+        pixel_vector = camera.get_pixel_vector(x, y, width, height)
+        color = scene.trace(camera.eye, pixel_vector, camera.near, camera.far, camera.eye)
+        pix[y * height + x] = (color[0], color[1], color[2])
