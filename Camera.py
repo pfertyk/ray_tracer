@@ -1,6 +1,8 @@
+import os
 import numpy
 import math
 from PIL import Image
+from multiprocessing import Process, Queue, JoinableQueue
 
 
 class Camera:
@@ -41,15 +43,40 @@ class Camera:
 
     def render_image(self, size, scene):
         width, height = size
-        image = Image.new("RGB", size)
+        image = Image.new('RGB', size)
         pix = image.load()
+        pixel_coordinates = JoinableQueue()
+        rendered_pixels = Queue()
         for x in range(width):
             for y in range(height):
-                # thread.start_new_thread(calc_pixel, (self, scene, x, y, width, height, pix))
-                self.calc_pixel(scene, x, y, width, height, pix)
-        image.save("image.png")
-        
-    def calc_pixel(self, scene, x, y, width, height, pix):
-        pixel_vector = self.get_pixel_vector(x, y, width, height)
-        color = scene.trace(self.eye, pixel_vector, self.near, self.far, self.eye)
-        pix[x, y] = (color[0], color[1], color[2])
+                pixel_coordinates.put((x, y))
+        ps = []
+        for i in range(4):
+            p = Process(target=calc_pixel, name='t%d' % i, args=(pixel_coordinates, self, scene, width, height, rendered_pixels))
+            p.daemon = True
+            ps.append(p)
+
+        for p in ps:
+            p.start()
+
+        pixel_coordinates.join()
+        print('all pixels processed')
+        while not rendered_pixels.empty():
+            (x, y), color = rendered_pixels.get()
+            pix[x, y] = color
+        print('image rendered')
+        image.save('image.png')
+
+
+def calc_pixel(pixel_coordinates, camera, scene, width, height, rendered_pixels):
+    try:
+        while True:
+            print(os.getpid())
+            x, y = pixel_coordinates.get(timeout=1)
+            pixel_vector = camera.get_pixel_vector(x, y, width, height)
+            color = scene.trace(camera.eye, pixel_vector, camera.near, camera.far, camera.eye)
+            rendered_pixels.put(((x, y), (color[0], color[1], color[2])))
+            pixel_coordinates.task_done()
+    except:
+        print('error')
+    print('end', os.getpid())
