@@ -42,7 +42,7 @@ class Camera:
         pixel_vector = (self.at * self.n) + (self.right * x_pos) + (self.up * -y_pos)
         return pixel_vector
 
-    def render_image(self, size, scene):
+    def render_image(self, scene, size=(100, 100), file_name='image.png'):
         m = Manager()
         width, height = size
         rendered_pixels = m.list(range(width * height))
@@ -52,7 +52,7 @@ class Camera:
 
         image = Image.new('RGB', size)
         image.putdata(rendered_pixels)
-        image.save('image.png')
+        image.save(file_name)
 
     def calculate_pixel(self, pixel_coordinates, scene, width, height, pix):
         x, y = pixel_coordinates
