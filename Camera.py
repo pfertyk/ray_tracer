@@ -47,14 +47,14 @@ class Camera:
         width, height = size
         rendered_pixels = m.list(range(width * height))
         pool = Pool()
-        calc_pix = partial(self.calc_pixel, scene=scene, width=width, height=height, pix=rendered_pixels)
+        calc_pix = partial(self.calculate_pixel, scene=scene, width=width, height=height, pix=rendered_pixels)
         pool.map(calc_pix, ((x, y) for x in range(width) for y in range(height)))
 
         image = Image.new('RGB', size)
         image.putdata(rendered_pixels)
         image.save('image.png')
 
-    def calc_pixel(self, pixel_coordinates, scene, width, height, pix):
+    def calculate_pixel(self, pixel_coordinates, scene, width, height, pix):
         x, y = pixel_coordinates
         pixel_vector = self.get_pixel_vector(x, y, width, height)
         color = scene.trace(self.eye, pixel_vector, self.near, self.far, self.eye)
