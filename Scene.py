@@ -3,29 +3,29 @@ import ShadingModel
 
 
 class Scene:
-    def __init__(self, backgroundColor = [0, 0, 0]):
+    def __init__(self, background_color=(0, 0, 0)):
         self.objects = []
         self.lights = []
-        self.backgroundColor = backgroundColor
+        self.background_color = background_color
         self.shadingModel = ShadingModel.PhongShadingModel()
         self.ambientColor = [127, 127, 127]
     
     def collision(self, e, d, near, far):
-        collisionResult = CollisionResult.CollisionResult()
-        collisionResult.collisionDistance = far
-        collisionResult.isCollision = False
+        collision_result = CollisionResult.CollisionResult()
+        collision_result.collisionDistance = far
+        collision_result.isCollision = False
         
         for obj in self.objects:
-            tempResult = obj.collision(e, d, near, collisionResult.collisionDistance)
-            if tempResult.isCollision:
-                collisionResult = tempResult
+            temp_result = obj.collision(e, d, near, collision_result.collisionDistance)
+            if temp_result.isCollision:
+                collision_result = temp_result
         
-        return collisionResult
+        return collision_result
     
     def trace(self, e, d, near, far, eye):
-        collisionResult = self.collision(e, d, near, far)
-        if not collisionResult.isCollision :
-            return self.backgroundColor
+        collision_result = self.collision(e, d, near, far)
+        if not collision_result.isCollision:
+            return self.background_color
         else:
-            color = self.shadingModel.calculate_color(collisionResult, self, eye);
-            return color; 
+            color = self.shadingModel.calculate_color(collision_result, self, eye)
+            return color

@@ -19,7 +19,7 @@ class PhongShadingModel:
             l = numpy.linalg.norm(L)
             L = L / numpy.linalg.norm(L)
             if not scene.collision(collisionResult.collisionPoint, L, 0.00001, l).isCollision:
-                lightColor = light.get_light_intensity(collisionResult.collisionPoint)
+                lightColor = light.get_light_intensity_at(collisionResult.collisionPoint)
                 R = reflection(-L, collisionResult.normal)
                 R = R / numpy.linalg.norm(R)
                 coeff1 = numpy.dot(L, collisionResult.normal)
