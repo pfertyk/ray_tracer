@@ -1,7 +1,9 @@
+from functools import partial
+from multiprocessing.pool import Pool
 import numpy
 import math
 from PIL import Image
-from multiprocessing import Process, Manager
+from multiprocessing import Manager
 
 
 class Camera:
@@ -41,30 +43,20 @@ class Camera:
         return pixel_vector
 
     def render_image(self, size, scene):
-        width, height = size
-        image = Image.new('RGB', size)
-
-        pixel_coordinates = list()
         m = Manager()
+        width, height = size
         rendered_pixels = m.list(range(width * height))
-        num_of_threads = 4
-        for x in range(width):
-            for y in range(height):
-                pixel_coordinates.append((x, y))
-        chunks = [[e for e in pixel_coordinates[i::num_of_threads]] for i in range(num_of_threads)]
-        ps = []
-        for i in range(num_of_threads):
-            p = Process(target=calc_pixel, args=(chunks[i], self, scene, width, height, rendered_pixels))
-            ps.append(p)
-            p.start()
-        for p in ps:
-            p.join()
+        pool = Pool()
+        calc_pix = partial(calc_pixel, camera=self, scene=scene, width=width, height=height, pix=rendered_pixels)
+        pool.map(calc_pix, ((x, y) for x in range(width) for y in range(height)))
+
+        image = Image.new('RGB', size)
         image.putdata(rendered_pixels)
         image.save('image.png')
 
 
 def calc_pixel(pixel_coordinates, camera, scene, width, height, pix):
-    for (x, y) in pixel_coordinates:
-        pixel_vector = camera.get_pixel_vector(x, y, width, height)
-        color = scene.trace(camera.eye, pixel_vector, camera.near, camera.far, camera.eye)
-        pix[y * height + x] = (color[0], color[1], color[2])
+    x, y = pixel_coordinates
+    pixel_vector = camera.get_pixel_vector(x, y, width, height)
+    color = scene.trace(camera.eye, pixel_vector, camera.near, camera.far, camera.eye)
+    pix[y * height + x] = (color[0], color[1], color[2])
