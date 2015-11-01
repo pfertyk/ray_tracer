@@ -58,4 +58,4 @@ class Camera:
         x, y = pixel_coordinates
         pixel_vector = self.get_pixel_vector(x, y, width, height)
         color = scene.trace(self.eye, pixel_vector, self.near, self.far, self.eye)
-        pix[y * height + x] = (color[0], color[1], color[2])
+        pix[y * height + x] = color

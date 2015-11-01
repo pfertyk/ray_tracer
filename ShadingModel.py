@@ -9,7 +9,7 @@ def reflection(vector, normal):
 
 class PhongShadingModel:
     def calculate_color(self, collisionResult, scene, eye):
-        color = [int(collisionResult.material.ambientCoeff*x*y/255) for x, y in zip(collisionResult.material.ambientColor, scene.ambientColor)]
+        color = tuple(int(collisionResult.material.ambientCoeff*x*y/255) for x, y in zip(collisionResult.material.ambientColor, scene.ambientColor))
         
         V = eye - collisionResult.collisionPoint
         V = V / numpy.linalg.norm(V)
@@ -30,7 +30,6 @@ class PhongShadingModel:
                 coeff2 = max(coeff2, 0.0);
                 coeff2 = coeff2**collisionResult.material.exponent
                 specColor = [int(x * y * collisionResult.material.specularCoeff * coeff2/255) for x,y in zip(collisionResult.material.specularColor, lightColor)]
-                color = [x + y for x, y in zip(color, specColor)]
-        
+                color = tuple(x + y for x, y in zip(color, specColor))
         
         return color
