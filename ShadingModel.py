@@ -25,7 +25,7 @@ class PhongShadingModel:
                 coeff1 = numpy.dot(L, collisionResult.normal)
                 coeff1 = max(coeff1, 0.0)
                 diffColor = [int(x * y * collisionResult.material.diffuseCoeff * coeff1/255) for x,y in zip(collisionResult.material.diffuseColor, lightColor)]
-                color = [x + y for x, y in zip(color, diffColor)]
+                color = tuple(x + y for x, y in zip(color, diffColor))
                 coeff2 = numpy.dot(R, V)
                 coeff2 = max(coeff2, 0.0);
                 coeff2 = coeff2**collisionResult.material.exponent

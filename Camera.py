@@ -57,5 +57,5 @@ class Camera:
     def calculate_pixel(self, pixel_coordinates, scene, width, height, pix):
         x, y = pixel_coordinates
         pixel_vector = self.get_pixel_vector(x, y, width, height)
-        color = scene.trace(self.eye, pixel_vector, self.near, self.far, self.eye)
+        color = scene.trace(self.eye, pixel_vector, self.near, self.far)
         pix[y * height + x] = color

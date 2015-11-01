@@ -8,7 +8,7 @@ class Scene:
         self.lights = []
         self.background_color = background_color
         self.shadingModel = ShadingModel.PhongShadingModel()
-        self.ambientColor = [127, 127, 127]
+        self.ambientColor = (127, 127, 127)
     
     def collision(self, e, d, near, far):
         collision_result = CollisionResult.CollisionResult()
@@ -22,10 +22,10 @@ class Scene:
         
         return collision_result
     
-    def trace(self, e, d, near, far, eye):
+    def trace(self, e, d, near, far):
         collision_result = self.collision(e, d, near, far)
         if not collision_result.isCollision:
             return self.background_color
         else:
-            color = self.shadingModel.calculate_color(collision_result, self, eye)
+            color = self.shadingModel.calculate_color(collision_result, self, e)
             return color

@@ -9,7 +9,7 @@ import time
 
 
 if __name__ == '__main__':
-    light = Light.Light(pos=numpy.array([10, 10, 10]))
+    light = Light.Light(pos=(-10, 10, 10))
 
     material1 = Material.Material([255, 165, 0], [255, 165, 0], [255, 255, 255], 1, 1, 1, 60)
     material2 = Material.Material([30, 144, 255], [30, 144, 255], [255, 255, 255], 1, 1, 1, 60)
