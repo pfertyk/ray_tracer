@@ -1,5 +1,5 @@
-from SceneObjects import CollisionResult
-import ShadingModel
+from raytracer.SceneObjects import CollisionResult
+from raytracer import ShadingModel
 
 
 class Scene:

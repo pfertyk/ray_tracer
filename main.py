@@ -1,8 +1,8 @@
-from Scene import Scene
-from Camera import Camera
-from SceneObjects import Sphere, Plane, Light, orange_material, blue_material, reflective_material
 import time
 
+from raytracer.Scene import Scene
+from raytracer.Camera import Camera
+from raytracer.SceneObjects import Sphere, Plane, Light, orange_material, reflective_material
 
 if __name__ == '__main__':
     light = Light((-10, 10, 10))
