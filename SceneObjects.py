@@ -2,9 +2,9 @@ import numpy as np
 import math
 
 
-orange_material = {
-    'ambient_color': (255, 165, 0),
-    'diffuse_color': (255, 165, 0),
+white_material = {
+    'ambient_color': (255, 255, 255),
+    'diffuse_color': (255, 255, 255),
     'specular_color': (255, 255, 255),
     'ambient_coeff': 1,
     'diffuse_coeff': 1,
@@ -12,25 +12,16 @@ orange_material = {
     'exponent': 60
 }
 
-blue_material = {
-    'ambient_color': (30, 144, 255),
-    'diffuse_color': (30, 144, 255),
-    'specular_color': (255, 255, 255),
-    'ambient_coeff': 1,
-    'diffuse_coeff': 1,
-    'specular_coeff': 1,
-    'exponent': 60
-}
 
-gray_material = {
-    'ambient_color': (127, 127, 127),
-    'diffuse_color': (127, 127, 127),
-    'specular_color': (0, 0, 0),
-    'ambient_coeff': 1,
-    'diffuse_coeff': 1,
-    'specular_coeff': 1,
-    'exponent': 60
-}
+orange_material = dict(white_material)
+orange_material['ambient_color'] = orange_material['diffuse_color'] = (255, 165, 0)
+
+blue_material = dict(white_material)
+blue_material['ambient_color'] = blue_material['diffuse_color'] = (30, 144, 255)
+
+gray_material = dict(white_material)
+gray_material['ambient_color'] = gray_material['diffuse_color'] = (127, 127, 127)
+gray_material['specular_color'] = (0, 0, 0)
 
 
 class CollisionResult:
