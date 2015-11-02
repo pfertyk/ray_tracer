@@ -1,6 +1,6 @@
 from Scene import Scene
 from Camera import Camera
-from SceneObjects import Sphere, Plane, Light, orange_material, blue_material, gray_material
+from SceneObjects import Sphere, Plane, Light, orange_material, blue_material
 import time
 
 
@@ -9,8 +9,7 @@ if __name__ == '__main__':
 
     sphere1 = Sphere((0.5, 2.2, -5.0), 1, orange_material)
     sphere2 = Sphere((-0.5, 2, -5.0), 1.2, blue_material)
-
-    plane1 = Plane(material=gray_material)
+    plane1 = Plane()
 
     scene = Scene()
 
