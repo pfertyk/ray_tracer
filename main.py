@@ -1,24 +1,21 @@
 import numpy
 import Scene
 import Camera
-import Sphere
-import Material
-import Light
-import Plane
+from SceneObjects import Sphere, Plane, Light, Material
 import time
 
 
 if __name__ == '__main__':
-    light = Light.Light(pos=(-10, 10, 10))
+    light = Light((-10, 10, 10))
 
-    material1 = Material.Material([255, 165, 0], [255, 165, 0], [255, 255, 255], 1, 1, 1, 60)
-    material2 = Material.Material([30, 144, 255], [30, 144, 255], [255, 255, 255], 1, 1, 1, 60)
-    material3 = Material.Material([127, 127, 127], [127, 127, 127], [0, 0, 0], 1, 1, 0, 60)
+    material1 = Material((255, 165, 0), (255, 165, 0), (255, 255, 255), 1, 1, 1, 60)
+    material2 = Material((30, 144, 255), (30, 144, 255), (255, 255, 255), 1, 1, 1, 60)
+    material3 = Material((127, 127, 127), (127, 127, 127), (0, 0, 0), 1, 1, 0, 60)
 
-    sphere1 = Sphere.Sphere(numpy.array([0.5, 2.2, -5.0]), 1.0, material1)
-    sphere2 = Sphere.Sphere(numpy.array([-0.5, 2.0, -5.0]), 1.2, material2)
+    sphere1 = Sphere((0.5, 2.2, -5.0), 1, material1)
+    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, material2)
 
-    plane1 = Plane.Plane(material=material3)
+    plane1 = Plane(material=material3)
 
     scene = Scene.Scene()
 

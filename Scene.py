@@ -1,4 +1,4 @@
-import CollisionResult
+from SceneObjects import CollisionResult
 import ShadingModel
 
 
@@ -11,7 +11,7 @@ class Scene:
         self.ambientColor = (127, 127, 127)
     
     def collision(self, e, d, near, far):
-        collision_result = CollisionResult.CollisionResult()
+        collision_result = CollisionResult()
         collision_result.collisionDistance = far
         collision_result.isCollision = False
         
