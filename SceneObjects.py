@@ -9,7 +9,8 @@ white_material = {
     'ambient_coeff': 1,
     'diffuse_coeff': 1,
     'specular_coeff': 1,
-    'exponent': 60
+    'exponent': 60,
+    'reflection': 0
 }
 
 
@@ -22,6 +23,10 @@ blue_material['ambient_color'] = blue_material['diffuse_color'] = (30, 144, 255)
 gray_material = dict(white_material)
 gray_material['ambient_color'] = gray_material['diffuse_color'] = (127, 127, 127)
 gray_material['specular_color'] = (0, 0, 0)
+
+reflective_material = dict(white_material)
+reflective_material['reflection'] = 1
+reflective_material['ambient_coeff'] = reflective_material['diffuse_coeff'] = 0
 
 
 class CollisionResult:

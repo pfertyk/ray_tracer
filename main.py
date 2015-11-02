@@ -1,14 +1,14 @@
 from Scene import Scene
 from Camera import Camera
-from SceneObjects import Sphere, Plane, Light, orange_material, blue_material
+from SceneObjects import Sphere, Plane, Light, orange_material, blue_material, reflective_material
 import time
 
 
 if __name__ == '__main__':
     light = Light((-10, 10, 10))
 
-    sphere1 = Sphere((0.5, 2.2, -5.0), 1, orange_material)
-    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, blue_material)
+    sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, orange_material)
+    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, reflective_material)
     plane1 = Plane()
 
     scene = Scene()
@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
     t_start = time.time()
     print("Start")
-    camera.render_image(scene, (100, 100))
+    camera.render_image(scene, (400, 400))
     print("Finished", time.time() - t_start)

@@ -32,5 +32,10 @@ class PhongShadingModel:
                 coeff2 = coeff2**material['exponent']
                 specColor = [int(x * y * material['specular_coeff'] * coeff2/255) for x,y in zip(material['specular_color'], lightColor)]
                 color = tuple(x + y for x, y in zip(color, specColor))
+
+        if material['reflection'] > 0:
+            reflected_vector = reflection(-V, collision_result.normal)
+            reflected_color = scene.trace(collision_result.collisionPoint, reflected_vector, 0.00001, 100000)
+            color = tuple(x + y for x, y in zip(color, reflected_color))
         
         return color
