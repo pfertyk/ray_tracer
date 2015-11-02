@@ -1,23 +1,18 @@
-import numpy
-import Scene
-import Camera
-from SceneObjects import Sphere, Plane, Light, Material
+from Scene import Scene
+from Camera import Camera
+from SceneObjects import Sphere, Plane, Light, orange_material, blue_material, gray_material
 import time
 
 
 if __name__ == '__main__':
     light = Light((-10, 10, 10))
 
-    material1 = Material((255, 165, 0), (255, 165, 0), (255, 255, 255), 1, 1, 1, 60)
-    material2 = Material((30, 144, 255), (30, 144, 255), (255, 255, 255), 1, 1, 1, 60)
-    material3 = Material((127, 127, 127), (127, 127, 127), (0, 0, 0), 1, 1, 0, 60)
+    sphere1 = Sphere((0.5, 2.2, -5.0), 1, orange_material)
+    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, blue_material)
 
-    sphere1 = Sphere((0.5, 2.2, -5.0), 1, material1)
-    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, material2)
+    plane1 = Plane(material=gray_material)
 
-    plane1 = Plane(material=material3)
-
-    scene = Scene.Scene()
+    scene = Scene()
 
     scene.objects.append(sphere1)
     scene.objects.append(sphere2)
@@ -25,7 +20,7 @@ if __name__ == '__main__':
 
     scene.lights.append(light)
 
-    camera = Camera.Camera(eye=numpy.array([0, 4, 0]), center=numpy.array([0, 2, -5]))
+    camera = Camera(eye=(0, 4, 0), center=(0, 2, -5))
 
     t_start = time.time()
     print("Start")

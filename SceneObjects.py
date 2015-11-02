@@ -2,27 +2,46 @@ import numpy as np
 import math
 
 
-class Material:
-    def __init__(self, ambientColor=(255, 255, 255), diffuseColor=(255, 255, 255), specularColor=(255, 255, 255),
-                 ambientCoeff=1, diffuseCoeff=1, specularCoeff=1, exponent=27):
-            self.ambientColor = ambientColor
-            self.diffuseColor = diffuseColor
-            self.specularColor = specularColor
-            self.ambientCoeff = ambientCoeff
-            self.diffuseCoeff = diffuseCoeff
-            self.specularCoeff = specularCoeff
-            self.exponent = exponent
+orange_material = {
+    'ambient_color': (255, 165, 0),
+    'diffuse_color': (255, 165, 0),
+    'specular_color': (255, 255, 255),
+    'ambient_coeff': 1,
+    'diffuse_coeff': 1,
+    'specular_coeff': 1,
+    'exponent': 60
+}
+
+blue_material = {
+    'ambient_color': (30, 144, 255),
+    'diffuse_color': (30, 144, 255),
+    'specular_color': (255, 255, 255),
+    'ambient_coeff': 1,
+    'diffuse_coeff': 1,
+    'specular_coeff': 1,
+    'exponent': 60
+}
+
+gray_material = {
+    'ambient_color': (127, 127, 127),
+    'diffuse_color': (127, 127, 127),
+    'specular_color': (0, 0, 0),
+    'ambient_coeff': 1,
+    'diffuse_coeff': 1,
+    'specular_coeff': 1,
+    'exponent': 60
+}
 
 
 class CollisionResult:
     def __init__(self):
         self.collisionDistance = 0.0
-        self.material = Material()
+        self.material = gray_material
         self.isCollision = False
 
 
 class Sphere:
-    def __init__(self, pos=(0, 0, 0), radius=1, material=Material()):
+    def __init__(self, pos=(0, 0, 0), radius=1, material=gray_material):
         self.pos = pos
         self.radius = radius
         self.material = material
@@ -31,7 +50,7 @@ class Sphere:
         result = CollisionResult()
         result.isCollision = False
 
-        temp = e - self.pos
+        temp = np.subtract(e, self.pos)
         a = np.dot(d, d)
         b = 2 * (np.dot(temp, d))
         c = np.dot(temp, temp) - (self.radius * self.radius)
@@ -66,7 +85,7 @@ class Sphere:
 
 
 class Plane:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0),  material=Material()):
+    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0),  material=gray_material):
         self.pos = pos
         normal = normal / np.linalg.norm(normal)
         self.normal = normal
@@ -77,7 +96,7 @@ class Plane:
         result.isCollision = False
         det = np.dot(d, self.normal)
         if det != 0:
-            t = np.dot(self.normal, (self.pos - e)) / det
+            t = np.dot(self.normal, np.subtract(self.pos, e)) / det
             if near <= t <= far:
                 result.isCollision = True
                 result.collisionDistance = t

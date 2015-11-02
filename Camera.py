@@ -1,16 +1,15 @@
 from functools import partial
 from multiprocessing.pool import Pool
-import numpy
+import numpy as np
 import math
 from PIL import Image
 from multiprocessing import Manager
 
 
 class Camera:
-    def __init__(self, eye=numpy.array([0.0, 0.0, 0.0]), center=numpy.array([0.0, 0.0, -1.0]),
-                 up=numpy.array([0.0, 1.0, 0.0]), fovy=45.0, aspect=1.0):
+    def __init__(self, eye=(0, 0, 0), center=(0, 0, -1), up=(0, 1, 0), fovy=45, aspect=1):
         self.eye = eye
-        self.at = center - eye
+        self.at = np.subtract(center, eye)
         self.up = up
         
         self.fovy = fovy
@@ -23,8 +22,8 @@ class Camera:
         self.near = 0.001
         self.far = 1000.0
         
-        self.right = numpy.cross(self.at, up)
-        self.up = numpy.cross(self.right, self.at)
+        self.right = np.cross(self.at, up)
+        self.up = np.cross(self.right, self.at)
         
         radians = math.pi * (fovy * 0.5) / 180.0
         
@@ -32,9 +31,9 @@ class Camera:
         self.hh = math.sin(radians)
         self.hw = self.aspect * self.hh
 
-        self.at = self.at / numpy.linalg.norm(self.at)
-        self.up = self.up / numpy.linalg.norm(self.up)
-        self.right = self.right / numpy.linalg.norm(self.right)
+        self.at = self.at / np.linalg.norm(self.at)
+        self.up = self.up / np.linalg.norm(self.up)
+        self.right = self.right / np.linalg.norm(self.right)
 
     def get_pixel_vector(self, x, y, width, height):
         x_pos = -self.hw + (2 * self.hw) * (x + 0.5) / width

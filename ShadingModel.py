@@ -8,28 +8,29 @@ def reflection(vector, normal):
     return reflection
 
 class PhongShadingModel:
-    def calculate_color(self, collisionResult, scene, eye):
-        color = tuple(int(collisionResult.material.ambientCoeff*x*y/255) for x, y in zip(collisionResult.material.ambientColor, scene.ambientColor))
+    def calculate_color(self, collision_result, scene, eye):
+        material = collision_result.material
+        color = tuple(int(material['ambient_coeff']*x*y/255) for x, y in zip(material['ambient_color'], scene.ambientColor))
         
-        V = eye - collisionResult.collisionPoint
+        V = eye - collision_result.collisionPoint
         V = V / numpy.linalg.norm(V)
         
         for light in scene.lights:
-            L = light.pos - collisionResult.collisionPoint
+            L = light.pos - collision_result.collisionPoint
             l = numpy.linalg.norm(L)
             L = L / numpy.linalg.norm(L)
-            if not scene.collision(collisionResult.collisionPoint, L, 0.00001, l).isCollision:
-                lightColor = light.get_light_intensity_at(collisionResult.collisionPoint)
-                R = reflection(-L, collisionResult.normal)
+            if not scene.collision(collision_result.collisionPoint, L, 0.00001, l).isCollision:
+                lightColor = light.get_light_intensity_at(collision_result.collisionPoint)
+                R = reflection(-L, collision_result.normal)
                 R = R / numpy.linalg.norm(R)
-                coeff1 = numpy.dot(L, collisionResult.normal)
+                coeff1 = numpy.dot(L, collision_result.normal)
                 coeff1 = max(coeff1, 0.0)
-                diffColor = [int(x * y * collisionResult.material.diffuseCoeff * coeff1/255) for x,y in zip(collisionResult.material.diffuseColor, lightColor)]
+                diffColor = [int(x * y * material['diffuse_coeff'] * coeff1/255) for x,y in zip(material['diffuse_color'], lightColor)]
                 color = tuple(x + y for x, y in zip(color, diffColor))
                 coeff2 = numpy.dot(R, V)
-                coeff2 = max(coeff2, 0.0);
-                coeff2 = coeff2**collisionResult.material.exponent
-                specColor = [int(x * y * collisionResult.material.specularCoeff * coeff2/255) for x,y in zip(collisionResult.material.specularColor, lightColor)]
+                coeff2 = max(coeff2, 0.0)
+                coeff2 = coeff2**material['exponent']
+                specColor = [int(x * y * material['specular_coeff'] * coeff2/255) for x,y in zip(material['specular_color'], lightColor)]
                 color = tuple(x + y for x, y in zip(color, specColor))
         
         return color
