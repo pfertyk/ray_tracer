@@ -1,36 +1,13 @@
 from collections import namedtuple
 import numpy as np
 import math
-
-
-white_material = {
-    'color': (255, 255, 255),
-    'specular_color': (255, 255, 255),
-    'exponent': 60,
-    'reflection': 0
-}
-
-
-orange_material = dict(white_material)
-orange_material['color'] = (255, 165, 0)
-
-blue_material = dict(white_material)
-blue_material['color'] = (30, 144, 255)
-
-gray_material = dict(white_material)
-gray_material['color'] = (127, 127, 127)
-gray_material['specular_color'] = (0, 0, 0)
-
-reflective_material = dict(white_material)
-reflective_material['reflection'] = 1
-reflective_material['color'] = (0, 0, 0)
-
+from raytracer.Materials import gray_matte
 
 CollisionResult = namedtuple('CollisionResult', 'point normal material')
 
 
 class Sphere:
-    def __init__(self, pos=(0, 0, 0), radius=1, material=gray_material):
+    def __init__(self, pos=(0, 0, 0), radius=1, material=gray_matte):
         self.pos = pos
         self.radius = radius
         self.material = material
@@ -72,7 +49,7 @@ class Sphere:
 
 
 class Plane:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0),  material=gray_material):
+    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0),  material=gray_matte):
         self.pos = pos
         normal = normal / np.linalg.norm(normal)
         self.normal = normal
