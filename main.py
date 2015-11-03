@@ -2,7 +2,7 @@ import time
 from raytracer.Materials import orange, mirror
 from raytracer.Scene import Scene
 from raytracer.Camera import Camera
-from raytracer.SceneObjects import Sphere, Plane
+from raytracer.Objects import Sphere, Plane
 from raytracer.Lights import Lamp, Ambient, Sun
 
 if __name__ == '__main__':
