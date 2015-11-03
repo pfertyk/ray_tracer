@@ -3,10 +3,11 @@ from raytracer.Materials import orange, mirror
 from raytracer.Scene import Scene
 from raytracer.Camera import Camera
 from raytracer.SceneObjects import Sphere, Plane
-from raytracer.Lights import Lamp, Ambient
+from raytracer.Lights import Lamp, Ambient, Sun
 
 if __name__ == '__main__':
     light1 = Lamp((-10, 10, 10))
+    # light1 = Sun()
     light2 = Ambient((127, 127, 127))
 
     sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, orange)

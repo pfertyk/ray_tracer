@@ -42,3 +42,18 @@ class Ambient:
 
     def get_light_vector_at(self, point):
         return None
+
+
+class Sun:
+    def __init__(self, direction=(0, -1, 0), color=(255, 255, 255)):
+        self.direction = direction / np.linalg.norm(direction)
+        self.color = color
+
+    def illuminates(self, point, scene):
+        return not scene.collision(point, -self.direction, 0.00001, float('inf'))
+
+    def get_light_intensity_at(self, point):
+            return self.color
+
+    def get_light_vector_at(self, point):
+        return self.direction
