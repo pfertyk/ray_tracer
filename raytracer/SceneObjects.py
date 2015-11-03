@@ -39,27 +39,26 @@ class Sphere:
                 is_collision = True
                 collision_distance = t
 
-        collision_result = None
         if is_collision:
             collision_point = direction * collision_distance + eye
             normal = collision_point - self.pos
-            normal = normal / np.linalg.norm(normal)
-            collision_result = CollisionResult(collision_point, normal, self.material)
-        return collision_result
+            normal /= np.linalg.norm(normal)
+            return CollisionResult(collision_point, normal, self.material)
+        else:
+            return None
 
 
 class Plane:
     def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0),  material=gray_matte):
         self.pos = pos
-        normal = normal / np.linalg.norm(normal)
+        normal /= np.linalg.norm(normal)
         self.normal = normal
         self.material = material
 
     def collision(self, eye, direction, near, far):
-        collision_result = None
         det = np.dot(direction, self.normal)
         if det != 0:
             t = np.dot(self.normal, np.subtract(self.pos, eye)) / det
             if near <= t <= far:
-                collision_result = CollisionResult(direction * t + eye, self.normal, self.material)
-        return collision_result
+                return CollisionResult(direction * t + eye, self.normal, self.material)
+        return None
