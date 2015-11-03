@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Light:
+class Lamp:
     def __init__(self, pos=(0, 0, 0), color=(255, 255, 255), attenuate=False, a=1, b=0, c=0):
         self.color = color
         self.pos = pos
@@ -28,3 +28,17 @@ class Light:
         light_vector = np.subtract(point, self.pos)
         light_vector /= np.linalg.norm(light_vector)
         return light_vector
+
+
+class Ambient:
+    def __init__(self, color=(255, 255, 255)):
+        self.color = color
+
+    def illuminates(self, point, scene):
+        return True
+
+    def get_light_intensity_at(self, point):
+            return self.color
+
+    def get_light_vector_at(self, point):
+        return None

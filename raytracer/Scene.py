@@ -1,5 +1,6 @@
 import numpy as np
 from raytracer.LightingModels import whitted_lighting_model
+from raytracer.Lights import Ambient
 
 
 class Scene:
@@ -8,7 +9,6 @@ class Scene:
         self.lights = []
         self.background_color = background_color
         self.lighting_model = whitted_lighting_model
-        self.ambient_color = (127, 127, 127)
         self.max_level = 4
     
     def collision(self, eye, direction, near, far):

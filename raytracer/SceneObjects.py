@@ -4,8 +4,7 @@ import math
 
 
 white_material = {
-    'ambient_color': (255, 255, 255),
-    'diffuse_color': (255, 255, 255),
+    'color': (255, 255, 255),
     'specular_color': (255, 255, 255),
     'exponent': 60,
     'reflection': 0
@@ -13,18 +12,18 @@ white_material = {
 
 
 orange_material = dict(white_material)
-orange_material['ambient_color'] = orange_material['diffuse_color'] = (255, 165, 0)
+orange_material['color'] = (255, 165, 0)
 
 blue_material = dict(white_material)
-blue_material['ambient_color'] = blue_material['diffuse_color'] = (30, 144, 255)
+blue_material['color'] = (30, 144, 255)
 
 gray_material = dict(white_material)
-gray_material['ambient_color'] = gray_material['diffuse_color'] = (127, 127, 127)
+gray_material['color'] = (127, 127, 127)
 gray_material['specular_color'] = (0, 0, 0)
 
 reflective_material = dict(white_material)
 reflective_material['reflection'] = 1
-reflective_material['ambient_color'] = reflective_material['diffuse_color'] = (0, 0, 0)
+reflective_material['color'] = (0, 0, 0)
 
 
 CollisionResult = namedtuple('CollisionResult', 'point normal material')

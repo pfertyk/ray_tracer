@@ -2,11 +2,12 @@ import time
 
 from raytracer.Scene import Scene
 from raytracer.Camera import Camera
-from raytracer.SceneObjects import Sphere, Plane, orange_material, reflective_material
-from raytracer.Lights import Light
+from raytracer.SceneObjects import Sphere, Plane, orange_material, reflective_material, blue_material
+from raytracer.Lights import Lamp, Ambient
 
 if __name__ == '__main__':
-    light = Light((-10, 10, 10))
+    light1 = Lamp((-10, 10, 10))
+    light2 = Ambient((127, 127, 127))
 
     sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, orange_material)
     sphere2 = Sphere((-0.5, 2, -5.0), 1.2, reflective_material)
@@ -18,7 +19,8 @@ if __name__ == '__main__':
     scene.objects.append(sphere2)
     scene.objects.append(plane1)
 
-    scene.lights.append(light)
+    scene.lights.append(light1)
+    scene.lights.append(light2)
 
     camera = Camera(eye=(0, 4, 0), center=(0, 2, -5))
 
