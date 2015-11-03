@@ -8,7 +8,7 @@ class Scene:
         self.lights = []
         self.background_color = background_color
         self.lighting_model = whitted_lighting_model
-        self.ambientColor = (127, 127, 127)
+        self.ambient_color = (127, 127, 127)
         self.max_level = 4
     
     def collision(self, eye, direction, near, far):

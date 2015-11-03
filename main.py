@@ -24,5 +24,5 @@ if __name__ == '__main__':
 
     t_start = time.time()
     print("Start")
-    camera.render_image(scene, (400, 400))
+    camera.render_image(scene, (200, 200))
     print("Finished", time.time() - t_start)

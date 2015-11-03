@@ -7,9 +7,6 @@ white_material = {
     'ambient_color': (255, 255, 255),
     'diffuse_color': (255, 255, 255),
     'specular_color': (255, 255, 255),
-    'ambient_coeff': 1,
-    'diffuse_coeff': 1,
-    'specular_coeff': 1,
     'exponent': 60,
     'reflection': 0
 }
@@ -27,7 +24,7 @@ gray_material['specular_color'] = (0, 0, 0)
 
 reflective_material = dict(white_material)
 reflective_material['reflection'] = 1
-reflective_material['ambient_coeff'] = reflective_material['diffuse_coeff'] = 0
+reflective_material['ambient_color'] = reflective_material['diffuse_color'] = (0, 0, 0)
 
 
 CollisionResult = namedtuple('CollisionResult', 'point normal material')
