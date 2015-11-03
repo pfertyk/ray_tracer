@@ -1,5 +1,5 @@
 import numpy as np
-from raytracer import ShadingModel
+from raytracer.LightingModels import whitted_lighting_model
 
 
 class Scene:
@@ -7,7 +7,7 @@ class Scene:
         self.objects = []
         self.lights = []
         self.background_color = background_color
-        self.shadingModel = ShadingModel.PhongShadingModel()
+        self.lighting_model = whitted_lighting_model
         self.ambientColor = (127, 127, 127)
         self.max_level = 4
     
@@ -30,6 +30,6 @@ class Scene:
             return self.background_color
         collision_result = self.collision(eye, direction, near, far)
         if collision_result:
-            return self.shadingModel.calculate_color(self, eye, collision_result, level)
+            return self.lighting_model(self, eye, collision_result, level)
         else:
             return self.background_color
