@@ -7,7 +7,7 @@ from raytracer.SceneObjects import Sphere, Plane, Light, orange_material, reflec
 if __name__ == '__main__':
     light = Light((-10, 10, 10))
 
-    sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, orange_material)
+    sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, reflective_material)
     sphere2 = Sphere((-0.5, 2, -5.0), 1.2, reflective_material)
     plane1 = Plane()
 

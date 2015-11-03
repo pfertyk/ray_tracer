@@ -1,3 +1,4 @@
+from collections import namedtuple
 import numpy as np
 import math
 
@@ -29,11 +30,7 @@ reflective_material['reflection'] = 1
 reflective_material['ambient_coeff'] = reflective_material['diffuse_coeff'] = 0
 
 
-class CollisionResult:
-    def __init__(self):
-        self.collisionDistance = 0.0
-        self.material = gray_material
-        self.isCollision = False
+CollisionResult = namedtuple('CollisionResult', 'point normal material')
 
 
 class Sphere:
@@ -42,13 +39,12 @@ class Sphere:
         self.radius = radius
         self.material = material
 
-    def collision(self, e, d, near, far):
-        result = CollisionResult()
-        result.isCollision = False
+    def collision(self, eye, direction, near, far):
+        is_collision = False
 
-        temp = np.subtract(e, self.pos)
-        a = np.dot(d, d)
-        b = 2 * (np.dot(temp, d))
+        temp = np.subtract(eye, self.pos)
+        a = np.dot(direction, direction)
+        b = 2 * (np.dot(temp, direction))
         c = np.dot(temp, temp) - (self.radius * self.radius)
         delta = b*b - 4*a*c
 
@@ -56,28 +52,27 @@ class Sphere:
             t1 = (-b - math.sqrt(delta)) / (2*a)
             t2 = (-b + math.sqrt(delta)) / (2*a)
             if (near <= t1 <= far) and (near <= t2 <= far):
-                result.isCollision = True
-                result.collisionDistance = min(t1, t2)
+                is_collision = True
+                collision_distance = min(t1, t2)
             elif near <= t1 <= far:
-                result.isCollision = True
-                result.collisionDistance = t1
+                is_collision = True
+                collision_distance = t1
             elif near <= t2 <= far:
-                result.isCollision = True
-                result.collisionDistance = t2
+                is_collision = True
+                collision_distance = t2
         elif delta == 0:
             t = -b / (2 * a)
             if near <= t <= far:
-                result.isCollision = True
-                result.collisionDistance = t
+                is_collision = True
+                collision_distance = t
 
-        if result.isCollision:
-            result.collisionPoint = d * result.collisionDistance + e
-            normal = result.collisionPoint - self.pos
+        collision_result = None
+        if is_collision:
+            collision_point = direction * collision_distance + eye
+            normal = collision_point - self.pos
             normal = normal / np.linalg.norm(normal)
-            result.normal = normal
-            result.material = self.material
-
-        return result
+            collision_result = CollisionResult(collision_point, normal, self.material)
+        return collision_result
 
 
 class Plane:
@@ -87,19 +82,14 @@ class Plane:
         self.normal = normal
         self.material = material
 
-    def collision(self, e, d, near, far):
-        result = CollisionResult()
-        result.isCollision = False
-        det = np.dot(d, self.normal)
+    def collision(self, eye, direction, near, far):
+        collision_result = None
+        det = np.dot(direction, self.normal)
         if det != 0:
-            t = np.dot(self.normal, np.subtract(self.pos, e)) / det
+            t = np.dot(self.normal, np.subtract(self.pos, eye)) / det
             if near <= t <= far:
-                result.isCollision = True
-                result.collisionDistance = t
-                result.material = self.material
-                result.normal = self.normal
-                result.collisionPoint = d * t + e
-        return result
+                collision_result = CollisionResult(direction * t + eye, self.normal, self.material)
+        return collision_result
 
 
 class Light:
