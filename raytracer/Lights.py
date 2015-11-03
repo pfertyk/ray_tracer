@@ -10,11 +10,21 @@ class Light:
         self.b = b
         self.c = c
 
+    def illuminates(self, point, scene):
+        light_vector = np.subtract(self.pos, point)
+        light_vector_len = np.linalg.norm(light_vector)
+        return not scene.collision(point, light_vector / light_vector_len, 0.00001, light_vector_len)
+
     def get_light_intensity_at(self, point):
             if self.attenuate:
-                d = np.linalg.norm(self.pos - point)
-                att_factor = self.a * d * d + self.b * d + self.c
+                distance = np.linalg.norm(self.pos - point)
+                att_factor = self.a * distance * distance + self.b * distance + self.c
                 color = (self.color[0] / att_factor, self.color[1] / att_factor, self.color[2] / att_factor)
             else:
                 color = self.color
             return color
+
+    def get_light_vector_at(self, point):
+        light_vector = np.subtract(point, self.pos)
+        light_vector /= np.linalg.norm(light_vector)
+        return light_vector
