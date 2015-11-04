@@ -34,6 +34,6 @@ def whitted_lighting_model(scene, eye, collision_result, level):
             color = tuple(x + y for x, y in zip(color, diffColor))
     if material.reflection > 0:
         reflected_vector = reflection(-V, normal)
-        reflected_color = scene.trace_ray(collision_point, reflected_vector, 0.00001, 100000, level-1)
+        reflected_color = scene.trace_ray(collision_point, reflected_vector, level-1)
         color = tuple(x + y for x, y in zip(color, reflected_color))
     return color

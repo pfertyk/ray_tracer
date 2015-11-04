@@ -12,7 +12,7 @@ class Sphere:
         self.radius = radius
         self.material = material
 
-    def collision(self, eye, direction, near, far):
+    def check_collision(self, eye, direction, near, far):
         is_collision = False
 
         temp = np.subtract(eye, self.pos)
@@ -55,7 +55,7 @@ class Plane:
         self.normal = normal
         self.material = material
 
-    def collision(self, eye, direction, near, far):
+    def check_collision(self, eye, direction, near, far):
         det = np.dot(direction, self.normal)
         if det != 0:
             t = np.dot(self.normal, np.subtract(self.pos, eye)) / det

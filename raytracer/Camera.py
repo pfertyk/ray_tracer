@@ -19,9 +19,6 @@ class Camera:
         self.hh = 0
         self.hw = 0
 
-        self.near = 0.001
-        self.far = 1000.0
-        
         self.right = np.cross(self.at, up)
         self.up = np.cross(self.right, self.at)
         
@@ -56,5 +53,5 @@ class Camera:
     def calculate_pixel(self, pixel_coordinates, scene, width, height, pix):
         x, y = pixel_coordinates
         pixel_vector = self.get_pixel_vector(x, y, width, height)
-        color = scene.trace_ray(self.eye, pixel_vector, self.near, self.far)
+        color = scene.trace_ray(self.eye, pixel_vector)
         pix[y * height + x] = color
