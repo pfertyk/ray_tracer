@@ -1,13 +1,13 @@
 from collections import namedtuple
 import numpy as np
 import math
-from raytracer.Materials import gray_matte
+from raytracer.Materials import GRAY_MATTE
 
 CollisionResult = namedtuple('CollisionResult', 'point normal material')
 
 
 class Sphere:
-    def __init__(self, pos=(0, 0, 0), radius=1, material=gray_matte):
+    def __init__(self, pos=(0, 0, 0), radius=1, material=GRAY_MATTE):
         self.pos = pos
         self.radius = radius
         self.material = material
@@ -49,7 +49,7 @@ class Sphere:
 
 
 class Plane:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), material=gray_matte):
+    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), material=GRAY_MATTE):
         self.pos = pos
         normal /= np.linalg.norm(normal)
         self.normal = normal
@@ -65,7 +65,7 @@ class Plane:
 
 
 class Circle:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), radius=1, front_material=gray_matte, back_material=None):
+    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), radius=1, front_material=GRAY_MATTE, back_material=None):
         if back_material is None:
             back_material = front_material
         self.front_plane = Plane(pos, normal, front_material)

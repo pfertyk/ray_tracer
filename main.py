@@ -1,24 +1,24 @@
 import time
-from raytracer.Materials import orange, mirror, blue
+from raytracer.Materials import ORANGE_GLOSSY, ORANGE_MATTE, BLUE_GLOSSY
 from raytracer.Scene import Scene
 from raytracer.Camera import Camera
 from raytracer.Objects import Sphere, Plane, Circle
 from raytracer.Lights import Lamp, Ambient, Sun
 
 if __name__ == '__main__':
-    light1 = Lamp((-10, 10, -10))
-    light1 = Sun()
-    light2 = Ambient((127, 127, 127))
+    light1 = Lamp(position=(-10, 10, -10))
+    light1 = Sun(direction=(0, -2, 0))
+    light2 = Ambient()
 
-    sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, orange)
-    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, orange)
-    plane1 = Plane(material=blue)
-    circle1 = Circle(pos=(0, 0.1, -5.5), normal=(0, 1, 0), radius=2, front_material=mirror)
+    sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, ORANGE_GLOSSY)
+    sphere2 = Sphere((-0.5, 2, -5.0), 1.2, ORANGE_GLOSSY)
+    plane1 = Plane(material=BLUE_GLOSSY)
+    circle1 = Circle(pos=(0, 0.1, -5.5), normal=(0, -1, 0), radius=2, front_material=ORANGE_MATTE)
 
     scene = Scene()
 
-    scene.objects.append(sphere1)
-    scene.objects.append(sphere2)
+    # scene.objects.append(sphere1)
+    # scene.objects.append(sphere2)
     scene.objects.append(plane1)
     scene.objects.append(circle1)
 
