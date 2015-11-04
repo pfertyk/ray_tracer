@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Lamp:
-    def __init__(self, color=(127, 127, 127), position=(0, 0, 0), max_lighting_distance=30):
+    def __init__(self, color=(255, 255, 255), position=(0, 0, 0), max_lighting_distance=30):
         self.color = color
         self.position = position
         self.max_lighting_distance = max_lighting_distance
