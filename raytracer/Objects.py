@@ -73,15 +73,13 @@ class Circle:
         self.radius = radius
 
     def check_collision(self, eye, direction, near, far):
-        front_collision_result = self.front_plane.check_collision(eye, direction, near, far)
-        back_collision_result = self.back_plane.check_collision(eye, direction, near, far)
-        if front_collision_result:
-            distance = np.linalg.norm(self.front_plane.pos - front_collision_result.point)
+        if np.dot(direction, self.front_plane.normal) < 0:
+            collision_result = self.front_plane.check_collision(eye, direction, near, far)
+        else:
+            collision_result = self.back_plane.check_collision(eye, direction, near, far)
+        if collision_result:
+            distance = np.linalg.norm(self.front_plane.pos - collision_result.point)
             if distance <= self.radius:
-                return front_collision_result
-        elif back_collision_result:
-            distance = np.linalg.norm(self.back_plane.pos - back_collision_result.point)
-            if distance <= self.radius:
-                return back_collision_result
+                return collision_result
         else:
             return None
