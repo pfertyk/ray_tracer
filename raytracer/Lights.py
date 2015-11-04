@@ -2,36 +2,32 @@ import numpy as np
 
 
 class Lamp:
-    def __init__(self, pos=(0, 0, 0), color=(255, 255, 255), attenuate=False, a=1, b=0, c=0):
+    def __init__(self, color=(127, 127, 127), position=(0, 0, 0), max_lighting_distance=30):
         self.color = color
-        self.pos = pos
-        self.attenuate = attenuate
-        self.a = a
-        self.b = b
-        self.c = c
+        self.position = position
+        self.max_lighting_distance = max_lighting_distance
 
     def illuminates(self, point, scene):
-        light_vector = np.subtract(self.pos, point)
+        light_vector = np.subtract(self.position, point)
         light_vector_len = np.linalg.norm(light_vector)
         return not scene.check_collision(point, light_vector / light_vector_len, far=light_vector_len)
 
     def get_light_intensity_at(self, point):
-        if self.attenuate:
-            distance = np.linalg.norm(self.pos - point)
-            att_factor = self.a * distance * distance + self.b * distance + self.c
-            color = (self.color[0] / att_factor, self.color[1] / att_factor, self.color[2] / att_factor)
+        distance = np.linalg.norm(np.subtract(point, self.position))
+        if distance > self.max_lighting_distance:
+            return 0, 0, 0
         else:
-            color = self.color
-        return color
+            factor = ((self.max_lighting_distance - distance) / self.max_lighting_distance)**2
+            return np.multiply(self.color, factor)
 
     def get_light_vector_at(self, point):
-        light_vector = np.subtract(point, self.pos)
+        light_vector = np.subtract(point, self.position)
         light_vector /= np.linalg.norm(light_vector)
         return light_vector
 
 
 class Ambient:
-    def __init__(self, color=(255, 255, 255)):
+    def __init__(self, color=(127, 127, 127)):
         self.color = color
 
     def illuminates(self, point, scene):
@@ -45,7 +41,7 @@ class Ambient:
 
 
 class Sun:
-    def __init__(self, direction=(0, -1, 0), color=(127, 127, 127)):
+    def __init__(self, color=(127, 127, 127), direction=(0, -1, 0)):
         self.direction = direction / np.linalg.norm(direction)
         self.color = color
 
