@@ -32,12 +32,6 @@ class Camera:
         self.up = self.up / np.linalg.norm(self.up)
         self.right = self.right / np.linalg.norm(self.right)
 
-    def get_pixel_vector(self, x, y, width, height):
-        x_pos = -self.hw + (2 * self.hw) * (x + 0.5) / width
-        y_pos = -self.hh + (2 * self.hh) * (y + 0.5) / height
-        pixel_vector = (self.at * self.n) + (self.right * x_pos) + (self.up * -y_pos)
-        return pixel_vector
-
     def render_image(self, scene, size=(100, 100), file_name='image.png'):
         m = Manager()
         width, height = size
@@ -53,5 +47,12 @@ class Camera:
     def calculate_pixel(self, pixel_coordinates, scene, width, height, pix):
         x, y = pixel_coordinates
         pixel_vector = self.get_pixel_vector(x, y, width, height)
+        pixel_vector /= np.linalg.norm(pixel_vector)
         color = scene.trace_ray(self.eye, pixel_vector)
         pix[y * height + x] = color
+
+    def get_pixel_vector(self, x, y, width, height):
+        x_pos = -self.hw + (2 * self.hw) * (x + 0.5) / width
+        y_pos = -self.hh + (2 * self.hh) * (y + 0.5) / height
+        pixel_vector = (self.at * self.n) + (self.right * x_pos) + (self.up * -y_pos)
+        return pixel_vector

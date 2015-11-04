@@ -49,7 +49,7 @@ class Sphere:
 
 
 class Plane:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0),  material=gray_matte):
+    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), material=gray_matte):
         self.pos = pos
         normal /= np.linalg.norm(normal)
         self.normal = normal
@@ -62,3 +62,26 @@ class Plane:
             if near <= t <= far:
                 return CollisionResult(direction * t + eye, self.normal, self.material)
         return None
+
+
+class Circle:
+    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), radius=1, front_material=gray_matte, back_material=None):
+        if back_material is None:
+            back_material = front_material
+        self.front_plane = Plane(pos, normal, front_material)
+        self.back_plane = Plane(pos, np.multiply(normal, -1), back_material)
+        self.radius = radius
+
+    def check_collision(self, eye, direction, near, far):
+        front_collision_result = self.front_plane.check_collision(eye, direction, near, far)
+        back_collision_result = self.back_plane.check_collision(eye, direction, near, far)
+        if front_collision_result:
+            distance = np.linalg.norm(self.front_plane.pos - front_collision_result.point)
+            if distance <= self.radius:
+                return front_collision_result
+        elif back_collision_result:
+            distance = np.linalg.norm(self.back_plane.pos - back_collision_result.point)
+            if distance <= self.radius:
+                return back_collision_result
+        else:
+            return None
