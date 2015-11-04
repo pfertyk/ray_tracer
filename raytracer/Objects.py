@@ -1,21 +1,21 @@
 from collections import namedtuple
 import numpy as np
 import math
-from raytracer.Materials import GRAY_MATTE
+from raytracer.Materials import GRAY_GLOSSY
 
 CollisionResult = namedtuple('CollisionResult', 'point normal material')
 
 
 class Sphere:
-    def __init__(self, pos=(0, 0, 0), radius=1, material=GRAY_MATTE):
-        self.pos = pos
+    def __init__(self, center=(0, 0, 0), radius=1, material=GRAY_GLOSSY):
+        self.center = np.array(center)
         self.radius = radius
         self.material = material
 
     def check_collision(self, eye, direction, near, far):
         is_collision = False
 
-        temp = np.subtract(eye, self.pos)
+        temp = eye - self.center
         a = np.dot(direction, direction)
         b = 2 * (np.dot(temp, direction))
         c = np.dot(temp, temp) - (self.radius * self.radius)
@@ -41,7 +41,7 @@ class Sphere:
 
         if is_collision:
             collision_point = direction * collision_distance + eye
-            normal = collision_point - self.pos
+            normal = collision_point - self.center
             normal /= np.linalg.norm(normal)
             return CollisionResult(collision_point, normal, self.material)
         else:
@@ -49,27 +49,27 @@ class Sphere:
 
 
 class Plane:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), material=GRAY_MATTE):
-        self.pos = pos
-        normal /= np.linalg.norm(normal)
-        self.normal = normal
+    def __init__(self, position=(0, 0, 0), normal=(0, 1, 0), material=GRAY_GLOSSY):
+        self.position = np.array(position)
+        self.normal = normal / np.linalg.norm(normal)
         self.material = material
 
     def check_collision(self, eye, direction, near, far):
-        det = np.dot(direction, self.normal)
-        if det != 0:
-            t = np.dot(self.normal, np.subtract(self.pos, eye)) / det
+        d = np.dot(direction, self.normal)
+        if d != 0:
+            t = np.dot(self.normal, (self.position - eye)) / d
             if near <= t <= far:
-                return CollisionResult(direction * t + eye, self.normal, self.material)
+                return CollisionResult(eye + direction * t, self.normal, self.material)
         return None
 
 
 class Circle:
-    def __init__(self, pos=(0, 0, 0), normal=(0, 1, 0), radius=1, front_material=GRAY_MATTE, back_material=None):
+    def __init__(self, center=(0, 0, 0), normal=(0, 1, 0), radius=1, front_material=GRAY_GLOSSY, back_material=None):
         if back_material is None:
             back_material = front_material
-        self.front_plane = Plane(pos, normal, front_material)
-        self.back_plane = Plane(pos, np.multiply(normal, -1), back_material)
+        normal = np.array(normal)
+        self.front_plane = Plane(center, normal, front_material)
+        self.back_plane = Plane(center, -normal, back_material)
         self.radius = radius
 
     def check_collision(self, eye, direction, near, far):
@@ -78,7 +78,7 @@ class Circle:
         else:
             collision_result = self.back_plane.check_collision(eye, direction, near, far)
         if collision_result:
-            distance = np.linalg.norm(self.front_plane.pos - collision_result.point)
+            distance = np.linalg.norm(self.front_plane.position - collision_result.point)
             if distance <= self.radius:
                 return collision_result
         else:

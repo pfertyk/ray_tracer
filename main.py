@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sphere1 = Sphere((1.5, 2.2, -4.0), 0.4, ORANGE_GLOSSY)
     sphere2 = Sphere((-0.5, 2, -5.0), 1.2, MIRROR_GLOSSY)
     plane1 = Plane(material=BLUE_GLOSSY)
-    circle1 = Circle(pos=(0, 0.1, -5.5), normal=(0, -1, 0), radius=2, front_material=ORANGE_MATTE)
+    circle1 = Circle(center=(0, 0.1, -5.5), radius=2, front_material=ORANGE_MATTE)
 
     scene = Scene()
 
