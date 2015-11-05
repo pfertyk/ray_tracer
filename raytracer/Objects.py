@@ -13,34 +13,25 @@ class Sphere:
         self.material = material
 
     def check_collision(self, eye, direction, near, far):
-        is_collision = False
+        collision_distance = None
 
-        temp = eye - self.center
+        to_eye = eye - self.center
         a = np.dot(direction, direction)
-        b = 2 * (np.dot(temp, direction))
-        c = np.dot(temp, temp) - (self.radius * self.radius)
-        delta = b*b - 4*a*c
+        b = 2*np.dot(to_eye, direction)
+        c = np.dot(to_eye, to_eye) - self.radius**2
+        delta = b**2 - 4*a*c
 
         if delta > 0:
-            t1 = (-b - math.sqrt(delta)) / (2*a)
-            t2 = (-b + math.sqrt(delta)) / (2*a)
-            if (near <= t1 <= far) and (near <= t2 <= far):
-                is_collision = True
-                collision_distance = min(t1, t2)
-            elif near <= t1 <= far:
-                is_collision = True
-                collision_distance = t1
-            elif near <= t2 <= far:
-                is_collision = True
-                collision_distance = t2
+            distance1 = (-b - math.sqrt(delta)) / (2*a)
+            distance2 = (-b + math.sqrt(delta)) / (2*a)
+            collision_distance = min((d for d in (distance1, distance2) if near <= d <= far), default=None)
         elif delta == 0:
-            t = -b / (2 * a)
-            if near <= t <= far:
-                is_collision = True
-                collision_distance = t
+            distance = -b / (2*a)
+            if near <= distance <= far:
+                collision_distance = distance
 
-        if is_collision:
-            collision_point = direction * collision_distance + eye
+        if collision_distance:
+            collision_point = eye + direction*collision_distance
             normal = collision_point - self.center
             normal /= np.linalg.norm(normal)
             return CollisionResult(collision_point, normal, self.material)
@@ -57,9 +48,9 @@ class Plane:
     def check_collision(self, eye, direction, near, far):
         d = np.dot(direction, self.normal)
         if d != 0:
-            t = np.dot(self.normal, (self.position - eye)) / d
-            if near <= t <= far:
-                return CollisionResult(eye + direction * t, self.normal, self.material)
+            distance = np.dot(self.normal, (self.position - eye)) / d
+            if near <= distance <= far:
+                return CollisionResult(eye + direction*distance, self.normal, self.material)
         return None
 
 
