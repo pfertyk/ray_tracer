@@ -42,7 +42,9 @@ class Camera:
 
         image = Image.new('RGB', size)
         image.putdata(rendered_pixels)
-        image.save(file_name)
+        if file_name:
+            image.save(file_name)
+        return image
 
     def calculate_pixel(self, pixel_coordinates, scene, width, height, pix):
         x, y = pixel_coordinates

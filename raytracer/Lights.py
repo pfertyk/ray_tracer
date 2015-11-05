@@ -21,7 +21,7 @@ class Lamp:
             return self.color * factor
 
     def get_light_vector_at(self, point):
-        light_vector = point, self.position
+        light_vector = point - self.position
         light_vector /= np.linalg.norm(light_vector)
         return light_vector
 
