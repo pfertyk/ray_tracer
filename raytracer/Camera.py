@@ -7,30 +7,17 @@ from multiprocessing import Manager
 
 
 class Camera:
-    def __init__(self, eye=(0, 0, 0), center=(0, 0, -1), up=(0, 1, 0), fovy=45, aspect=1):
-        self.eye = eye
-        self.at = np.subtract(center, eye)
-        self.up = up
-        
-        self.fovy = fovy
-        self.aspect = aspect
-        
-        self.n = 0
-        self.hh = 0
-        self.hw = 0
+    def __init__(self, position=(0, 0, 0), look_at=(0, 0, -1), up=(0, 1, 0), horizontal_angle=45):
+        self.position = np.array(position)
+        self.up = np.array(up)
 
-        self.right = np.cross(self.at, up)
-        self.up = np.cross(self.right, self.at)
-        
-        radians = math.pi * (fovy * 0.5) / 180.0
-        
-        self.n = math.cos(radians)
-        self.hh = math.sin(radians)
-        self.hw = self.aspect * self.hh
-
-        self.at = self.at / np.linalg.norm(self.at)
-        self.up = self.up / np.linalg.norm(self.up)
-        self.right = self.right / np.linalg.norm(self.right)
+        front = np.array(look_at) - self.position
+        self.front = front / np.linalg.norm(front)
+        right = np.cross(self.front, self.up)
+        self.right = right / np.linalg.norm(right)
+        up = np.cross(self.right, self.front)
+        self.up = up / np.linalg.norm(up)
+        self.image_plane_width = 2*(math.tan(math.radians(horizontal_angle/2)))
 
     def render_image(self, scene, size=(100, 100), file_name='image.png'):
         m = Manager()
@@ -38,7 +25,7 @@ class Camera:
         rendered_pixels = m.list(range(width * height))
         pool = Pool()
         calc_pix = partial(self.calculate_pixel, scene=scene, width=width, height=height, pix=rendered_pixels)
-        pool.map(calc_pix, ((x, y) for x in range(width) for y in range(height)))
+        pool.map(calc_pix, ((x, y) for (x, y) in np.ndindex(size)))
 
         image = Image.new('RGB', size)
         image.putdata(rendered_pixels)
@@ -50,11 +37,13 @@ class Camera:
         x, y = pixel_coordinates
         pixel_vector = self.get_pixel_vector(x, y, width, height)
         pixel_vector /= np.linalg.norm(pixel_vector)
-        color = scene.trace_ray(self.eye, pixel_vector)
+        color = scene.trace_ray(self.position, pixel_vector)
         pix[y * height + x] = color
 
     def get_pixel_vector(self, x, y, width, height):
-        x_pos = -self.hw + (2 * self.hw) * (x + 0.5) / width
-        y_pos = -self.hh + (2 * self.hh) * (y + 0.5) / height
-        pixel_vector = (self.at * self.n) + (self.right * x_pos) + (self.up * -y_pos)
+        image_plane_height = height * self.image_plane_width / width
+        x_pos = ((x + 0.5) / width) * self.image_plane_width - 0.5*self.image_plane_width
+        y_pos = ((y + 0.5) / height) * image_plane_height - 0.5*image_plane_height
+        pixel_vector = self.front + self.right*x_pos + self.up*-y_pos
+        pixel_vector /= np.linalg.norm(pixel_vector)
         return pixel_vector
