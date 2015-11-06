@@ -35,6 +35,6 @@ class Scene:
             return self.background_color
         collision_result = self.check_collision(eye, direction, self.near, self.far)
         if collision_result:
-            return self.lighting_model(self, eye, collision_result, recursion_level)
+            return self.lighting_model(self, direction, collision_result, recursion_level)
         else:
             return self.background_color
