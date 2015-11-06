@@ -19,7 +19,7 @@ class Camera:
         self.up = up / np.linalg.norm(up)
         self.image_plane_width = 2*(math.tan(math.radians(horizontal_angle/2)))
 
-    def render_image(self, scene, image_size=(100, 100), file_name='image.png'):
+    def render_image(self, scene, image_size=(128, 72), file_name='image.png'):
         m = Manager()
         rendered_pixels = m.list(range(np.prod(image_size)))
         pool = Pool()
