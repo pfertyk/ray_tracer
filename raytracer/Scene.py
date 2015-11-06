@@ -6,7 +6,7 @@ class Scene:
     def __init__(self):
         self.objects = []
         self.lights = []
-        self.background_color = (0, 0, 0)
+        self.background_color = (64, 64, 64)
         self.lighting_model = whitted_lighting_model
         self.max_recursion_level = 4
         self.near = 1e-10
