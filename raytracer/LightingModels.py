@@ -8,8 +8,8 @@ def whitted_lighting_model(scene, ray_direction, collision_result, recursion_lev
         light_color = light.get_light_intensity_at(collision_point)
         light_vector = light.get_light_vector_at(collision_point)
         if light_vector is not None:
-            color += _calculate_specular_color(light_color, light_vector, material, normal, ray_direction)
             color += _calculate_diffuse_color(light_color, light_vector, material, normal)
+            color += _calculate_specular_color(light_color, light_vector, material, normal, ray_direction)
         else:
             color += material.color * light_color / 255
     if material.reflection_factor > 0:
