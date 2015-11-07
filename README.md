@@ -6,6 +6,35 @@ This program requires Python 3.x and PIL library.
 
 ## Quick start
 
+```
+from raytracer.Examples import render_water_molecule
+
+render_water_molecule()
+```
+
+```
+from raytracer.Examples import render_water_molecule
+
+render_water_molecule(image_size=(1280, 720), file_name='water_molecule.png')
+```
+
+Please note that generating an image of this size might take few minutes.
+
+```
+from raytracer.Camera import Camera
+from raytracer.Lights import Sun, Ambient
+from raytracer.Materials import ORANGE_GLOSSY
+from raytracer.Objects import Sphere
+from raytracer.Scene import Scene
+
+scene = Scene()
+scene.objects.append(Sphere((0, 0, 0), 1, ORANGE_GLOSSY))
+scene.lights.append(Sun())
+scene.lights.append(Ambient())
+
+camera = Camera()
+camera.render_image(scene)
+```
 
 
 ## Samples
