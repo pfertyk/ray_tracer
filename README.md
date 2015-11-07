@@ -21,9 +21,10 @@ from raytracer.Examples import render_water_molecule
 
 render_water_molecule(image_size=(1280, 720), file_name='water_molecule.png')
 ```
+
 Please note that generating an image of this size might take few minutes.
 
-```Examples``` module offers 2 other methods: ```render_reflecting_sphere``` and ```render_infinity_mirror```. Custom scenes can also be created. Here is a simple example:
+```Examples``` module offers 2 other methods: ```render_reflecting_sphere``` and ```render_infinity_mirror```. Custom scenes can also be created:
 
 ```python
 from raytracer.Camera import Camera
@@ -40,12 +41,12 @@ scene.lights.append(Ambient())
 camera = Camera()
 camera.render_image(scene)
 ```
-This ray tracer can render spheres, planes and circles.
 
+This ray tracer can render spheres, planes and circles. It uses 3 different light sources: ambient, sun and point. Lighting model includes specular reflections, as well as reflected light rays (for creating mirror surfaces).
 
 ## Samples
 
-Sample images below have been generated using 3 scenes from the Examples module.
+Sample images below have been generated using 3 scenes from the ```Examples``` module.
 
 ![image1](samples/water_molecule.png)
 ![image2](samples/reflecting_sphere.png)
