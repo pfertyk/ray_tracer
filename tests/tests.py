@@ -4,7 +4,7 @@ from unittest.case import TestCase
 from PIL import Image
 
 from raytracer.Camera import Camera
-from raytracer.Lights import Sun, Ambient, Lamp
+from raytracer.Lights import Sun, Ambient, Point
 from raytracer.Materials import BLUE_GLOSSY, ORANGE_GLOSSY, GRAY_MATTE, GRAY_GLOSSY, ORANGE_MATTE, MIRROR_GLOSSY, \
     BLUE_MATTE
 from raytracer.Objects import Sphere, Plane, Circle
@@ -40,7 +40,7 @@ class RayTracingTests(TestCase):
         self.compare_images(rendered_image, 'sun_specular.png')
 
     def test_lamp_specular(self):
-        light1 = Lamp(position=(5, 5, 5))
+        light1 = Point(position=(5, 5, 5))
         light2 = Ambient()
         sphere1 = Sphere((0, 0, 0), 1, BLUE_GLOSSY)
         plane1 = Plane(position=(0, -2, 0), material=GRAY_MATTE)
@@ -56,7 +56,7 @@ class RayTracingTests(TestCase):
         self.compare_images(rendered_image, 'lamp_specular.png')
 
     def test_circle_front_back(self):
-        light1 = Lamp(position=(5, 5, 5))
+        light1 = Point(position=(5, 5, 5))
         light2 = Ambient()
         circle1 = Circle(center=(0, 0, 0.5), front_material=GRAY_GLOSSY, back_material=BLUE_GLOSSY)
         circle2 = Circle(center=(0, 1, -0.5), normal=(0, -1, 0), front_material=GRAY_GLOSSY, back_material=BLUE_GLOSSY)
@@ -74,7 +74,7 @@ class RayTracingTests(TestCase):
         self.compare_images(rendered_image, 'circle_front_back.png')
 
     def test_multiple_reflections(self):
-        light1 = Lamp(position=(-5, 5, 5))
+        light1 = Point(position=(-5, 5, 5))
         light2 = Ambient()
         sphere1 = Sphere((-0.7, 0, 0.2), 1, MIRROR_GLOSSY)
         plane1 = Plane(position=(0, -2, 0), material=BLUE_GLOSSY)
@@ -93,7 +93,7 @@ class RayTracingTests(TestCase):
         self.compare_images(rendered_image, 'multiple_reflections.png')
 
     def test_matte_no_ambient(self):
-        light1 = Lamp(position=(-5, 5, 5))
+        light1 = Point(position=(-5, 5, 5))
         sphere1 = Sphere((0, 0, 0), 1, BLUE_MATTE)
         plane1 = Plane(position=(0, -2, 0), material=GRAY_MATTE)
 

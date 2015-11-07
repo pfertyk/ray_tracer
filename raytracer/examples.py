@@ -5,7 +5,7 @@ from raytracer.Materials import ORANGE_GLOSSY, BLUE_GLOSSY, GRAY_MATTE, MIRROR_G
 from raytracer.Scene import Scene
 from raytracer.Camera import Camera
 from raytracer.Objects import Sphere, Plane, Circle
-from raytracer.Lights import Ambient, Sun, Lamp
+from raytracer.Lights import Ambient, Sun, Point
 
 
 def render_water_molecule(image_size=(128, 72), file_name='image.png'):
@@ -30,7 +30,7 @@ def render_reflecting_sphere(image_size=(128, 72), file_name='image.png'):
     scene.objects.append(Sphere((1, 0, 0), 0.3, GREEN_GLOSSY))
     scene.objects.append(Sphere((-1, 0, -0), 0.3, RED_GLOSSY))
     scene.objects.append(Plane(position=(0, -0.7, 0), material=GRAY_GLOSSY))
-    scene.lights.append(Lamp(position=(2, 5, 2), max_lighting_distance=128))
+    scene.lights.append(Point(position=(2, 5, 2), max_lighting_distance=128))
     scene.lights.append(Ambient())
 
     camera = Camera((0, 0.6, 4), (0, 0, 0))
@@ -49,7 +49,7 @@ def render_infinity_mirror(image_size=(128, 72), file_name='image.png'):
     scene.objects.append(Circle((-4, 0, 0), (1, -0.05, 0.1), 2, MIRROR_GLOSSY))
     scene.objects.append(Circle((-4.001, 0, 0), (1, -0.05, 0.1), 2.1, GRAY_MATTE))
     scene.objects.append(Plane(position=(0, -1, 0), material=YELLOW_MATTE))
-    scene.lights.append(Lamp(position=(1, 5, 2), max_lighting_distance=128))
+    scene.lights.append(Point(position=(1, 5, 2), max_lighting_distance=128))
     scene.lights.append(Ambient())
 
     camera = Camera((3, 0.4, 0), (0, 0, 0))
