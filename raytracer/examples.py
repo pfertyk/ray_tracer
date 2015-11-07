@@ -8,7 +8,7 @@ from raytracer.Objects import Sphere, Plane, Circle
 from raytracer.Lights import Ambient, Sun, Lamp
 
 
-def render_water_molecule():
+def render_water_molecule(image_size=(128, 72), file_name='image.png'):
     scene = Scene()
     scene.objects.append(Sphere((0, 0, 0), 0.5, ORANGE_GLOSSY))
     scene.objects.append(Sphere((0.124, 0.484, 0), 0.3, BLUE_GLOSSY))
@@ -20,11 +20,11 @@ def render_water_molecule():
     camera = Camera((0, 0.4, 4), (0, 0, 0))
     t_start = time.time()
     print("Start")
-    camera.render_image(scene)
+    camera.render_image(scene, image_size, file_name)
     print("Finished", time.time() - t_start)
 
 
-def render_reflecting_sphere():
+def render_reflecting_sphere(image_size=(128, 72), file_name='image.png'):
     scene = Scene()
     scene.objects.append(Sphere((0, 0, 0), 0.5, MIRROR_GLOSSY))
     scene.objects.append(Sphere((1, 0, 0), 0.3, GREEN_GLOSSY))
@@ -36,11 +36,11 @@ def render_reflecting_sphere():
     camera = Camera((0, 0.6, 4), (0, 0, 0))
     t_start = time.time()
     print("Start")
-    camera.render_image(scene)
+    camera.render_image(scene, image_size, file_name)
     print("Finished", time.time() - t_start)
 
 
-def render_infinity_mirror():
+def render_infinity_mirror(image_size=(128, 72), file_name='image.png'):
     scene = Scene()
     scene.max_recursion_level = 7
     scene.objects.append(Sphere((0, 0, 0), 0.25, PURPLE_GLOSSY))
@@ -55,5 +55,5 @@ def render_infinity_mirror():
     camera = Camera((3, 0.4, 0), (0, 0, 0))
     t_start = time.time()
     print("Start")
-    camera.render_image(scene, (1280, 720))
+    camera.render_image(scene, image_size, file_name)
     print("Finished", time.time() - t_start)
