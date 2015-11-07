@@ -1,3 +1,6 @@
+"""
+Contains methods for rendering sample scenes.
+"""
 import time
 
 from raytracer.Materials import ORANGE_GLOSSY, BLUE_GLOSSY, GRAY_MATTE, MIRROR_GLOSSY, GREEN_GLOSSY, RED_GLOSSY, \
