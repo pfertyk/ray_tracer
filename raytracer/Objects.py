@@ -1,3 +1,13 @@
+"""
+Contains scene objects.
+
+Each object must implement a method check_collision(eye, direction, near, far). Vectors eye and direction represent \
+the position and direction of a traced ray of light (direction must be normalized). Values near and far represent the\
+minimal and maximal distance along the ray that a collision can occur (if a collision occurs outside of this range, \
+it will not be detected). The value returned by this method is either None (if a collision with the object does not \
+occur) or a tuple of (collision_point, normal, material). Collision point is a point at which the ray collides with \
+the object, normal is a normalized normal vector at that point, and material is a material of given object.
+"""
 from collections import namedtuple
 import numpy as np
 import math
@@ -7,6 +17,15 @@ CollisionResult = namedtuple('CollisionResult', 'point normal material')
 
 
 class Sphere:
+    """
+    Represents a sphere.
+
+    Sphere is illuminated only from the outside. Inside can be illuminated using ambient light.
+
+    :param center: center point of the sphere.
+    :param radius: radius of the sphere (might be negative, in that case it will be converted to positive value)
+    :param material: material of the sphere
+    """
     def __init__(self, center=(0, 0, 0), radius=1, material=GRAY_GLOSSY):
         self.center = np.array(center)
         self.radius = radius
@@ -40,6 +59,14 @@ class Sphere:
 
 
 class Plane:
+    """
+    Represents an infinite plain.
+
+    The plain is only illuminated from one side (the other can only be illuminated using ambient light).
+    :param position: any point of this plane
+    :param normal: normal vector of this plane (does not have to be normalized).
+    :param material: material of the plane
+    """
     def __init__(self, position=(0, 0, 0), normal=(0, 1, 0), material=GRAY_GLOSSY):
         self.position = np.array(position)
         self.normal = normal / np.linalg.norm(normal)
@@ -55,6 +82,17 @@ class Plane:
 
 
 class Circle:
+    """
+    Represents a circle.
+
+    Circle is a limited plane. Unlike a plane, it is properly illuminated from both sides.
+
+    :param center: the center point of the circle
+    :param normal: normal vector of the front side of the circle
+    :param radius: radius of the circle
+    :param front_material: material of the front side
+    :param back_material: material of the back side (if not specified, front side material will be used)
+    """
     def __init__(self, center=(0, 0, 0), normal=(0, 1, 0), radius=1, front_material=GRAY_GLOSSY, back_material=None):
         if back_material is None:
             back_material = front_material
