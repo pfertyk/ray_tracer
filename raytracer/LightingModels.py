@@ -1,8 +1,8 @@
 """
 Contains lighting models.
 
-All vectors representing directions (normal vectors, ray vectors) passes to functions from this module have to be \
-normalized, unless specified otherwise.
+All vectors representing directions (normal vectors, ray vectors) passed to the
+functions from this module have to be normalized, unless specified otherwise.
 """
 import numpy as np
 
@@ -10,10 +10,16 @@ import numpy as np
 def whitted_lighting_model(scene, ray_direction, collision_result, recursion_level):
     """
     Represents lighting model with diffuse light, specular light and mirror reflections.
-    :param scene: whole scene (contains all light sources and objects that block lights)
-    :param ray_direction: direction of traced light ray
-    :param collision_result: a tuple of (collision_point, normal_vector, object_material)
-    :param recursion_level: current recursion level, used for reflected rays
+
+    This function calculates a color of a point as a sum of light it receives
+    from all light sources on scene. If light source is directed, the diffuse light will
+    be calculated using Lambertian reflectance and specular reflection will be added using
+    Phong model. If the material is reflective, a reflected ray will be traced through the scene
+    and its color added to the calculated color.
+    :param scene: scene that is being rendered
+    :param ray_direction: direction of a traced light ray
+    :param collision_result: a tuple of (collision_point, normal_vector, object_material), cannot be None
+    :param recursion_level: current recursion level for reflected rays
     :return: color as a tuple of 3 values (R, G, B), range 0 - 255.
     """
     collision_point, normal, material = collision_result

@@ -1,5 +1,9 @@
 """
-Contains methods for rendering sample scenes.
+Contains functions for rendering sample scenes.
+
+Each function by default generates a png file with a size of 128x72 pixels.
+These functions are meant to give a sample of the possible effects available
+in this ray tracer.
 """
 import time
 

@@ -8,11 +8,11 @@ from multiprocessing import Manager
 
 class Camera:
     """
-    Represents a camera on a scene.
+    Represents a camera.
 
-    One scene can be rendered using different cameras. That is why the camera is not
-    one of normal scene objects. Instead, it is a separate object that can render an
-    image of a scene, but is not rendered itself.
+    Camera can render a picture of a scene. One scene can be rendered using different cameras.
+    That is why the camera is not one of normal scene objects. Instead, it is a separate object
+    that can create an image of a scene, but is not rendered itself.
     """
     def __init__(self, position=(4, 4, 4), look_at=(0, 0, 0), up=(0, 1, 0), horizontal_angle=45):
         """
@@ -58,11 +58,11 @@ class Camera:
 
     def calculate_pixel_color(self, pixel_coordinates, image_size, scene, pixels):
         """
-        Calculates a color of one pixel on image plane and puts it in pixel data.
+        Calculates a color of one pixel on image plane and puts it in a pixel list.
         :param pixel_coordinates: pixel coordinates as a tuple (x, y)
         :param image_size: image size as a tuple (width, height)
         :param scene: scene to render
-        :param pixels: a list of pixels, each represented as a tuple of 3 colors (R, G, B)
+        :param pixels: a list of pixels, row by row, starting at top left corner, as tuples of 3 colors (R, G, B);
         """
         x, y = pixel_coordinates
         width, height = image_size

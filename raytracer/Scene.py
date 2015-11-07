@@ -47,8 +47,8 @@ class Scene:
         """
         Traces a ray of light through a scene and returns its color.
 
-        Detects first object that a ray collides with and calculated its color at given point.
-        If there is no collision, returns background color of the scene.
+        Detects first object that a ray collides with and calculates its color at given point.
+        If there is no collision (or recursion level reached 0), returns background color of the scene.
         :param eye: beginning point of a traced ray
         :param direction: direction of a traced ray (must be normalized)
         :param recursion_level: number of times the ray can reflect from any surface to create mirror reflection
