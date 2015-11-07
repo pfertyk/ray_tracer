@@ -144,3 +144,27 @@ class RayTracingTests(TestCase):
         camera = Camera((0, 0.4, 4), (0, 0, 0), horizontal_angle=90)
         rendered_image = camera.render_image(scene, file_name=None)
         self.compare_images(rendered_image, 'camera_angle_90.png')
+
+    def test_red_light(self):
+        scene = Scene()
+        scene.objects.append(Sphere((0, 0, 0), 0.5, ORANGE_GLOSSY))
+        scene.objects.append(Sphere((0.124, 0.484, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Sphere((-0.5, 0, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Plane(position=(0, -0.7, 0), material=GRAY_MATTE))
+        scene.lights.append(Sun(color=(255, 0, 0)))
+
+        camera = Camera((0, 0.4, 4), (0, 0, 0))
+        rendered_image = camera.render_image(scene, file_name=None)
+        self.compare_images(rendered_image, 'red_light.png')
+
+    def test_blue_light(self):
+        scene = Scene()
+        scene.objects.append(Sphere((0, 0, 0), 0.5, ORANGE_GLOSSY))
+        scene.objects.append(Sphere((0.124, 0.484, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Sphere((-0.5, 0, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Plane(position=(0, -0.7, 0), material=GRAY_MATTE))
+        scene.lights.append(Sun(color=(0, 0, 255)))
+
+        camera = Camera((0, 0.4, 4), (0, 0, 0))
+        rendered_image = camera.render_image(scene, file_name=None)
+        self.compare_images(rendered_image, 'blue_light.png')
