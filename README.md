@@ -24,7 +24,7 @@ render_water_molecule(image_size=(1280, 720), file_name='water_molecule.png')
 
 Please note that generating an image of this size might take few minutes.
 
-```Examples``` module offers 2 other methods: ```render_reflecting_sphere``` and ```render_infinity_mirror```. Custom scenes can also be created:
+The ```Examples``` module offers 2 other methods: ```render_reflecting_sphere``` and ```render_infinity_mirror```. Custom scenes can also be created:
 
 ```python
 from raytracer.Camera import Camera
@@ -42,11 +42,11 @@ camera = Camera()
 camera.render_image(scene)
 ```
 
-This ray tracer can render spheres, planes and circles. It uses 3 different light sources: ambient, sun and point. Lighting model includes specular reflections, as well as reflected light rays (for creating mirror surfaces).
+This ray tracer can render spheres, planes and circles. It uses 3 different light sources: ambient, sun and point. The lighting model includes specular reflections, as well as reflected light rays (for creating mirror surfaces).
 
 ## Samples
 
-Sample images below have been generated using 3 scenes from the ```Examples``` module.
+Images below have been generated using the functions from the ```Examples``` module mentioned earlier (image size set to 1280x720).
 
 ![image1](samples/water_molecule.png)
 ![image2](samples/reflecting_sphere.png)
@@ -54,6 +54,6 @@ Sample images below have been generated using 3 scenes from the ```Examples``` m
 
 ## Tests
 
-Several tests are provided for this program. Each test generates an image of a scene and compares it with an original image (stored in tests directory). If any differences are detected, the generated image is saved to allow comparing it with original.
+Several tests are provided for this program. Each test generates an image of a scene and compares it with an original image (stored in the tests directory). If any differences are detected, the generated image is saved to allow comparing it with the original.
 
 Please keep in mind that these tests run much longer than standard unit tests.
