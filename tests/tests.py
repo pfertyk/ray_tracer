@@ -81,6 +81,7 @@ class RayTracingTests(TestCase):
         circle1 = Circle(center=(0.8, 0, -0.5), normal=(-1, 0, 1), radius=1.5, front_material=MIRROR_GLOSSY)
 
         scene = Scene()
+        scene.background_color = (0, 0, 0)
         scene.objects.append(circle1)
         scene.objects.append(sphere1)
         scene.objects.append(plane1)
@@ -104,3 +105,42 @@ class RayTracingTests(TestCase):
         camera = Camera((0, 3, 3), (0, 0, 0))
         rendered_image = camera.render_image(scene, (100, 100), file_name=None)
         self.compare_images(rendered_image, 'matte_no_ambient.png')
+
+    def test_camera_angle_30(self):
+        scene = Scene()
+        scene.objects.append(Sphere((0, 0, 0), 0.5, ORANGE_GLOSSY))
+        scene.objects.append(Sphere((0.124, 0.484, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Sphere((-0.5, 0, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Plane(position=(0, -0.7, 0), material=GRAY_MATTE))
+        scene.lights.append(Sun())
+        scene.lights.append(Ambient())
+
+        camera = Camera((0, 0.4, 4), (0, 0, 0), horizontal_angle=30)
+        rendered_image = camera.render_image(scene, file_name=None)
+        self.compare_images(rendered_image, 'camera_angle_30.png')
+
+    def test_camera_angle_60(self):
+        scene = Scene()
+        scene.objects.append(Sphere((0, 0, 0), 0.5, ORANGE_GLOSSY))
+        scene.objects.append(Sphere((0.124, 0.484, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Sphere((-0.5, 0, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Plane(position=(0, -0.7, 0), material=GRAY_MATTE))
+        scene.lights.append(Sun())
+        scene.lights.append(Ambient())
+
+        camera = Camera((0, 0.4, 4), (0, 0, 0), horizontal_angle=60)
+        rendered_image = camera.render_image(scene, file_name=None)
+        self.compare_images(rendered_image, 'camera_angle_60.png')
+
+    def test_camera_angle_90(self):
+        scene = Scene()
+        scene.objects.append(Sphere((0, 0, 0), 0.5, ORANGE_GLOSSY))
+        scene.objects.append(Sphere((0.124, 0.484, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Sphere((-0.5, 0, 0), 0.3, BLUE_GLOSSY))
+        scene.objects.append(Plane(position=(0, -0.7, 0), material=GRAY_MATTE))
+        scene.lights.append(Sun())
+        scene.lights.append(Ambient())
+
+        camera = Camera((0, 0.4, 4), (0, 0, 0), horizontal_angle=90)
+        rendered_image = camera.render_image(scene, file_name=None)
+        self.compare_images(rendered_image, 'camera_angle_90.png')
